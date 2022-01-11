@@ -1,0 +1,40 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:8761/eureka/'
+  instance:
+    hostname: localhost
+    prefer-ip-address: 'true'
+spring:
+  application:
+    name: cloud-gateway-microservice
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          lower-case-service-id: 'true'
+      routes:
+        - id: spaceapi-application-microservice
+          uri: 'lb://spaceapi-application-microservice'
+          predicates:
+            - Path=/v1/api/space/**
+            - Method=GET
+        - id: space-application-microservice
+          uri: 'lb://space-application-microservice'
+          predicates:
+            - Path=/planet/**
+            - Method=GET
+        - id: starapp-microservice
+          uri: 'lb://starapp-microservice'
+          predicates:
+            - Path=/star/**
+            - Method=GET
+          filters:
+            - AuthorizationHeaderFilter
+server:
+  port: 6000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'beans,health,routes,httptrace'
