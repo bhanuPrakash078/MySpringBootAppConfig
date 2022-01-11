@@ -1,0 +1,40 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:8761/eureka/'
+  instance:
+    hostname: localhost
+    prefer-ip-address: 'true'
+spring:
+  application:
+    name: api-gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          lower-case-service-id: 'true'
+      routes:
+        - id: currency-exchange-service
+          uri: 'lb://currency-exchange-service'
+          predicates:
+            - Path=/currency/exchange/**
+            - Method=GET
+        - id: currency-conversion-service
+          uri: 'lb://currency-conversion-service'
+          predicates:
+            - Path=/currency/conversion/**
+            - Method=GET
+        - id: currency-conversion-service-feign
+          uri: 'lb://currency-conversion-service'
+          predicates:
+            - Path=/currency/conversionFeign/**
+            - Method=GET
+          filters:
+            - AuthorizationHeaderFilter      
+server:
+  port: 8800
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'beans,health,routes,httptrace'
