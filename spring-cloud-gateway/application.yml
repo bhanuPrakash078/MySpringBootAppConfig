@@ -38,6 +38,16 @@ spring:
             - Method=GET
           filters:
             - AuthorizationHeaderFilter
+        - id: user-management-service
+          uri: 'lb://user-management-service'
+          predicates:
+            - Path=/users
+            - Method=POST
+        - id: user-management-service
+          uri: 'lb://user-management-service'
+          predicates:
+            - Path=/users/login
+            - Method=POST
 server:
   port: 5000
 management:
