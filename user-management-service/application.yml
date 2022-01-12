@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: user-management-service
+  jpa:
+    show-sql: 'true'
+    defer-datasource-initialization: 'true'
+  datasource:
+    url: 'jdbc:h2:mem:testdb'
+  h2:
+    console:
+      enabled: 'true'
+      settings:
+        web-allow-others: 'true'
+server:
+  port: '8000'
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:8761/eureka/'
