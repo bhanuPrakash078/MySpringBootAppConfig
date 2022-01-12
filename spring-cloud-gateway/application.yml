@@ -14,20 +14,27 @@ spring:
         locator:
           lower-case-service-id: 'true'
       routes:
-        - id: spaceapi-application-microservice
-          uri: 'lb://spaceapi-application-microservice'
+        - id: currency-exchange-service-get
+          uri: 'lb://currency-exchange-service'
           predicates:
-            - Path=/v1/api/space/**
+            - Path=/currency/exchange**
             - Method=GET
-        - id: space-application-microservice
-          uri: 'lb://space-application-microservice'
+        - id: currency-exchange-service-post
+          uri: 'lb://currency-exchange-service'
           predicates:
-            - Path=/planet/**
+            - Path=/currency/exchange**
+            - Method=POST
+          filters:
+            - AuthorizationHeaderFilter
+        - id: currency-conversion-service
+          uri: 'lb://currency-conversion-service'
+          predicates:
+            - Path=/currency/conversion**
             - Method=GET
-        - id: starapp-microservice
-          uri: 'lb://starapp-microservice'
+        - id: currency-conversion-service-feign
+          uri: 'lb://currency-conversion-service'
           predicates:
-            - Path=/star/**
+            - Path=/currency/conversionFeign**
             - Method=GET
           filters:
             - AuthorizationHeaderFilter
